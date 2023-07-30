@@ -1,6 +1,6 @@
 package com.example.testfirebase;
 
-public class User {
+public class Users {
     public String phone, profile;
     public String idcompat;
     public String email;
@@ -16,9 +16,9 @@ public class User {
     public String vipstatus;
     public String status;
 
-    public User(){}
+    public Users(){}
 
-    public User(String Phone, String Name, String Idcompat, String Date, String Email, String Password, String Gender, String Aim, Integer Verify, String Job, String School, String City, String Vipstatus, String Status)
+    public Users(String Phone, String Name, String Idcompat, String Date, String Email, String Password, String Gender, String Aim, Integer Verify, String Job, String School, String City, String Vipstatus, String Status)
     {
         this.aim = Aim;
         this.city = City;

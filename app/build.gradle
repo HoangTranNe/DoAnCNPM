@@ -30,9 +30,6 @@ android {
 }
 
 dependencies {
-
-
-
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -52,4 +49,9 @@ dependencies {
 
     //facebook
     implementation 'com.facebook.android:facebook-android-sdk:16.1.3'
+
+    //swipecard
+    implementation 'com.lorentzos.swipecards:library:1.0.9'
+
 }
+

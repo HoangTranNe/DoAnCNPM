@@ -6,13 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <com.lorentzos.flingswipe.SwipeFlingAdapterView
+        android:id="@+id/frame"
+        android:background="#ffeee9e2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rotation_degrees="15.5"
+        tools:context=".MyActivity" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:id="@+id/superLikeButton"
+        android:text="@string/lbl_super_like"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/frame"
+        app:layout_constraintVertical_bias="0.696" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

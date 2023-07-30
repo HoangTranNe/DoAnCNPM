@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="country_codes">
+        <item>+1 (United States)</item>
+        <item>+44 (United Kingdom)</item>
+        <item>+61 (Australia)</item>
+        <item>+65 (Singapore)</item>
+        <item>+60 (Malaysia)</item>
+        <item>+66 (Thailand)</item>
+        <item>+84 (Vietnam)</item>
+        <item>+62 (Indonesia)</item>
+        <item>+63 (Philippines)</item>
+        <item>+855 (Cambodia)</item>
+        <item>+856 (Laos)</item>
+        <item>+95 (Myanmar)</item>
+        <item>+670 (Timor-Leste)</item>
+    </string-array>
+</resources>

@@ -25,31 +25,41 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
 
-public class login1Activity extends AppCompatActivity {
 
-    Button btnSignin;
+public class LoginActivity extends AppCompatActivity {
+
+    Button btnSignin,btnSigninphone;
     FirebaseAuth auth;
     FirebaseDatabase database;
 
     GoogleSignInClient mGoogleSignInClient;
     ProgressDialog progressDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        btnSigninphone = findViewById(R.id.btnSignInWithPhoneNumber);
         btnSignin = findViewById(R.id.btnSignInWithGoogleOne);
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
-        progressDialog = new ProgressDialog(login1Activity.this);
+        progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("Creating Account");
         progressDialog.setMessage("We have create your acount");
 
 
+        btnSigninphone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, LoginPhoneNumberActivity.class);
+                startActivity(intent);
+                Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            }
+        });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                         .requestEmail()
@@ -88,26 +98,27 @@ public class login1Activity extends AppCompatActivity {
 
     private void firebaseAuth(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken,null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser user = auth.getCurrentUser();
-                            User users = new User();
-                            users.setPhone(user.getPhoneNumber());
-                            users.setName(user.getDisplayName());
-                            users.setProfile(user.getPhotoUrl().toString());
+        auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Users users = new Users();
+                    FirebaseUser user = auth.getCurrentUser();
+                    assert user != null;
+                    users.setPhone(user.getPhoneNumber());
+                    users.setName(user.getDisplayName());
+                    users.setProfile(Objects.requireNonNull(user.getPhotoUrl()).toString());
 
-                            database.getReference().child("Users").child(user.getUid()).setValue(users);
+                    database.getReference().child("Users").child(user.getUid()).setValue(users);
 
-                            Intent intent = new Intent(login1Activity.this, login2Activity.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(login1Activity.this, "error", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 }

@@ -134,4 +134,6 @@ happens when your number changes.</string>
     <string name="lbl_i_am_a">I am a</string>
     <string name="msg_this_contact_has_no_phone_nu">This contact has no phone number</string>
     <string name="msg_camera_storage_permission">This Application need permission\n1.Camera permission to capture the image.\n2.Storage Access permission to save the captured image.</string>
+    <string name="resend_code">Resend code</string>
+    <string name="didn_t_have_receive_otp">Didn\'t have receive OTP?</string>
 </resources>
