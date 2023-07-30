@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private int i;
     FirebaseFirestore firestore;
-    Button superLikeButton = findViewById(R.id.superLikeButton);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        superLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleSuperLike();
-            }
-        });
     }
 
-    private void handleSuperLike() {
-        String superLikedItem = "Super Liked Item";
-        al.add(0, superLikedItem);
-        arrayAdapter.notifyDataSetChanged();
-    }
 }

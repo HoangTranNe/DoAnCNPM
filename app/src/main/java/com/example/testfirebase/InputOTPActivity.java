@@ -3,11 +3,13 @@ package com.example.testfirebase;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,7 +17,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.w3c.dom.Text;
 
 public class InputOTPActivity extends AppCompatActivity {
@@ -57,7 +69,6 @@ public class InputOTPActivity extends AppCompatActivity {
     };
     EditText otp1,otp2,otp3,otp4,otp5,otp6;
     TextView resendOTP;
-    Button btnContinue;
     Boolean resendEnable = false;
     Integer resendTime = 60;
 
@@ -76,7 +87,7 @@ public class InputOTPActivity extends AppCompatActivity {
 
         resendOTP = findViewById(R.id.resendBTN);
 
-        final Button verifyBTN = findViewById(R.id.btnContinue);
+        final Button verifyBTN = findViewById(R.id.verifyBTN);
         final TextView inpPhone = findViewById(R.id.inputPhone);
 
         final String getMobile = getIntent().getStringExtra("inphone");
@@ -97,13 +108,12 @@ public class InputOTPActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(resendEnable){
-
                     startCountDownTimer();
                 }
             }
         });
 
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        verifyBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String generateOTP =
@@ -113,14 +123,46 @@ public class InputOTPActivity extends AppCompatActivity {
                                 otp4.getText().toString()+
                                 otp5.getText().toString()+
                                 otp6.getText().toString();
-                if(generateOTP.length() ==6){
-
+                if (generateOTP.length() == 6) {
+                    // Verify the OTP with Firebase
+                    String verificationId = getIntent().getStringExtra("verification_id");
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, generateOTP);
+                    signInWithPhoneAuthCredential(credential);
+                } else {
+                    Toast.makeText(InputOTPActivity.this, "Please enter a valid OTP.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void showKeyBoard(EditText otpET){
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signInWithCredential(phoneAuthCredential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = task.getResult().getUser();
+                            // You can handle the successful sign-in here, for example:
+                            Toast.makeText(InputOTPActivity.this, "Authentication successful!", Toast.LENGTH_SHORT).show();
+                            // Proceed to the next activity or perform any desired actions.
+
+                            // Example: Proceed to a home activity after successful sign-in
+                            Intent intent = new Intent(InputOTPActivity.this, InputNameActivity.class);
+                            startActivity(intent);
+                            finish(); // Finish the current activity to prevent the user from going back to the OTP screen.
+                        } else {
+                            // Sign in failed, display a message to the user and provide an option to retry.
+                            Toast.makeText(InputOTPActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            Log.w("InputOTPActivity", "signInWithCredential:failure", task.getException());
+                            // If you want to retry, you can provide an option here to resend the OTP.
+                        }
+                    }
+                });
+    }
+
+    private void  showKeyBoard(EditText otpET){
         otpET.requestFocus();
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(otpET, InputMethodManager.SHOW_IMPLICIT);

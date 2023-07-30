@@ -136,4 +136,6 @@ happens when your number changes.</string>
     <string name="msg_camera_storage_permission">This Application need permission\n1.Camera permission to capture the image.\n2.Storage Access permission to save the captured image.</string>
     <string name="resend_code">Resend code</string>
     <string name="didn_t_have_receive_otp">Didn\'t have receive OTP?</string>
+    <string name="this_is_how_it_will_appear_in_tinder_and_you_will_not_be_able_to_change_it">This is how it will appear in Tinder and you will not be able to change it</string>
+    <string name="my_first_name_is">My First Name Is...</string>
 </resources>
